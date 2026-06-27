@@ -7,6 +7,15 @@
     <title>Калькулятор себестоимости саженца</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌱</text></svg>">
     <link rel="stylesheet" href="css/style.css">
+    <script>
+        (function () {
+            var saved = localStorage.getItem("theme");
+            var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+            if (saved === "dark" || (!saved && prefersDark)) {
+                document.documentElement.setAttribute("data-theme", "dark");
+            }
+        })();
+    </script>
 </head>
 <body>
 
@@ -19,6 +28,9 @@
         <nav class="nav">
             <a href="index.html" class="nav-link active">Главная</a>
             <a href="calculator.html" class="nav-link">Калькулятор</a>
+            <button type="button" class="theme-toggle" id="themeToggle" aria-label="Переключить тему" title="Светлая / тёмная тема">
+                <span id="themeToggleIcon" aria-hidden="true">🌙</span>
+            </button>
         </nav>
     </div>
 </header>
@@ -94,6 +106,38 @@
 <footer class="site-footer">
     Калькулятор себестоимости саженцев • Валюта: рубли (₽)
 </footer>
+
+<script>
+    (function () {
+        var toggle = document.getElementById("themeToggle");
+        var icon = document.getElementById("themeToggleIcon");
+
+        function isDark() {
+            return document.documentElement.getAttribute("data-theme") === "dark";
+        }
+
+        function updateIcon() {
+            icon.textContent = isDark() ? "☀️" : "🌙";
+        }
+
+        function setTheme(dark) {
+            if (dark) {
+                document.documentElement.setAttribute("data-theme", "dark");
+                localStorage.setItem("theme", "dark");
+            } else {
+                document.documentElement.removeAttribute("data-theme");
+                localStorage.setItem("theme", "light");
+            }
+            updateIcon();
+        }
+
+        toggle.addEventListener("click", function () {
+            setTheme(!isDark());
+        });
+
+        updateIcon();
+    })();
+</script>
 
 </body>
 </html>
